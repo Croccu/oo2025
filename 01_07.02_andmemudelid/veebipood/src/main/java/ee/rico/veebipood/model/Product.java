@@ -5,10 +5,7 @@ package ee.rico.veebipood.model;
 
 //File -> Settings -> Plugins -> JPA Buddy -> Install
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,4 +25,7 @@ public class Product {
     private double price;
     private String image; //.jpg
     private boolean active;
+
+    @ManyToOne
+    private Category category;
 }
