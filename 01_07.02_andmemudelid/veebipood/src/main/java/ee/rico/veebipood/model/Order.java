@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "orders") // andmebaasis tuleb tabeli nimi "orders"
 
 public class Order {
     @Id
