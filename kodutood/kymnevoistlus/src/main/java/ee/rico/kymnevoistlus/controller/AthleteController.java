@@ -30,4 +30,15 @@ public class AthleteController {
         athleteRepository.save(athlete);
         return athleteRepository.save(athlete);
     }
+
+    @GetMapping("products/{id}")
+    public Athlete getAthlete(@PathVariable Long id) {
+        return athleteRepository.findById(id).orElseThrow();
+    }
+
+    @DeleteMapping("products/{id}")
+    public List<Athlete> deleteAthlete(@PathVariable Long id) {
+        athleteRepository.deleteById(id);
+        return athleteRepository.findAll();
+    }
 }
