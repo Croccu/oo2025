@@ -19,7 +19,7 @@ public class Score {
 
     @Column(name = "athlete_id", insertable = false, updatable = false)
     private Long athleteId;
-    
+
     private String eventName;
     private Double result;
     private int points;
