@@ -1,6 +1,8 @@
 package ee.rico.kymnevoistlus.controller;
 
+import ee.rico.kymnevoistlus.model.Athlete;
 import ee.rico.kymnevoistlus.model.Score;
+import ee.rico.kymnevoistlus.repository.AthleteRepository;
 import ee.rico.kymnevoistlus.repository.ScoreRepository;
 import ee.rico.kymnevoistlus.service.ScoringService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class ScoreController {
             "100m", "long jump", "shot put", "high jump", "400m",
             "110m hurdles", "discus throw", "pole vault", "javelin throw", "1500m"
     );
+    @Autowired
+    private AthleteRepository athleteRepository;
 
     @GetMapping("scores")
     public List<Score> getScores() {
@@ -42,6 +46,11 @@ public class ScoreController {
         if (score.getResult() == null) {
             throw new RuntimeException("ERROR_RESULT_CANNOT_BE_EMPTY");
         }
+
+        Athlete athlete = athleteRepository.findById(score.getAthleteId())
+                .orElseThrow(() -> new RuntimeException("ERROR_ATHLETE_NOT_FOUND"));
+        score.setAthlete(athlete);
+
         int calculatedPoints = scoringService.calculateScore(score.getEventName(), score.getResult());
         score.setPoints(calculatedPoints);
 
