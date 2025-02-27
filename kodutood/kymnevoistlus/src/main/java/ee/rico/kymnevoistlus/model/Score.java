@@ -16,11 +16,15 @@ public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "athlete_id", insertable = false, updatable = false)
     private Long athleteId;
+    
     private String eventName;
     private Double result;
     private int points;
 
     @ManyToOne
+    @JoinColumn(name = "athlete_id")
     private Athlete athlete;
 }
