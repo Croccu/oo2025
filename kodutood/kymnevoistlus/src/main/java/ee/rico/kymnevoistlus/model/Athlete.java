@@ -19,4 +19,7 @@ public class Athlete {
     private String name;
     private String country;
     private int age;
+
+    @Column(name = "total_points", nullable = false, columnDefinition = "integer default 0")
+    private int totalPoints;
 }
