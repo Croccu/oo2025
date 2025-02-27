@@ -19,7 +19,7 @@ public class AthleteController {
         return athleteRepository.findAll();
     }
 
-    @PostMapping("products")
+    @PostMapping("athletes")
     public Athlete addAthlete(@RequestBody Athlete athlete) {
         if (athlete.getId() != null) {
             throw new RuntimeException("ERROR_CANNOT_ADD_WITH_ID");
@@ -31,12 +31,12 @@ public class AthleteController {
         return athleteRepository.save(athlete);
     }
 
-    @GetMapping("products/{id}")
+    @GetMapping("athletes/{id}")
     public Athlete getAthlete(@PathVariable Long id) {
         return athleteRepository.findById(id).orElseThrow();
     }
 
-    @DeleteMapping("products/{id}")
+    @DeleteMapping("athletes/{id}")
     public List<Athlete> deleteAthlete(@PathVariable Long id) {
         athleteRepository.deleteById(id);
         return athleteRepository.findAll();
