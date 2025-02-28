@@ -1,4 +1,4 @@
-package ee.rico.slipping_average.Entity;
+package ee.rico.polygon.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,9 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class ValueEntity {
+public class Dimensions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int value;
+    private double x;
+    private double y;
 }
