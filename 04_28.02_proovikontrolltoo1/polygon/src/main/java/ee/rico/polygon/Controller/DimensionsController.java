@@ -5,10 +5,7 @@ import ee.rico.polygon.Repository.DimensionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,6 +25,27 @@ public class DimensionsController {
         dimensionsRepository.save(dimensions);
         return dimensionsRepository.findAll();
     }
+
+    @PatchMapping("dimensions/adjust_x")
+    public List<Dimensions> adjustXCoordinates(@RequestParam Double value) {
+        List<Dimensions> dimensionsList = dimensionsRepository.findAll();
+        for (Dimensions dimensions : dimensionsList) {
+            dimensions.setX(dimensions.getX() + value);
+        }
+        dimensionsRepository.saveAll(dimensionsList);
+        return dimensionsList;
+    }
+
+    @PatchMapping("dimensions/adjust_y")
+    public List<Dimensions> adjustYCoordinates(@RequestParam Double value) {
+        List<Dimensions> dimensionsList = dimensionsRepository.findAll();
+        for (Dimensions dimensions : dimensionsList) {
+            dimensions.setY(dimensions.getY() + value);
+        }
+        dimensionsRepository.saveAll(dimensionsList);
+        return dimensionsList;
+    }
+
 
     @GetMapping("dimensions/perimeter")
     public ResponseEntity<String> getPerimeter() {
