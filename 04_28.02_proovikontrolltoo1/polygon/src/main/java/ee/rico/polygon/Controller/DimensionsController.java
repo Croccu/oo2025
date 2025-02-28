@@ -3,6 +3,8 @@ package ee.rico.polygon.Controller;
 import ee.rico.polygon.Entity.Dimensions;
 import ee.rico.polygon.Repository.DimensionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,4 +28,36 @@ public class DimensionsController {
         dimensionsRepository.save(dimensions);
         return dimensionsRepository.findAll();
     }
+
+    @GetMapping("dimensions/perimeter")
+    public ResponseEntity<String> getPerimeter() {
+        List<Dimensions> dimensionsList = dimensionsRepository.findAll();
+
+        if (dimensionsList.size() < 3) {
+            throw new RuntimeException("ERROR_NOT_ENOUGH_POINTS_FOR_PERIMETER");
+        }
+
+        double perimeter = calculatePerimeter(dimensionsList);
+        return new ResponseEntity<>(perimeter + "", HttpStatus.OK);
+    }
+
+    private double calculateDistance(Dimensions first, Dimensions second) {
+        double xDiff = second.getX() - first.getX();
+        double yDiff = second.getY() - first.getY();
+        return Math.sqrt(xDiff * xDiff + yDiff * yDiff);
+    }
+
+    private double calculatePerimeter (List<Dimensions> dimensionsList) {
+        double perimeter = 0;
+        int size = dimensionsList.size();
+        for (int i = 0; i < dimensionsList.size(); i++) {
+            Dimensions current = dimensionsList.get(i);
+            Dimensions next = dimensionsList.get((i + 1) % size);
+
+            double distance = calculateDistance(current, next);
+            perimeter += distance;
+        }
+        return perimeter;
+    }
+
 }
