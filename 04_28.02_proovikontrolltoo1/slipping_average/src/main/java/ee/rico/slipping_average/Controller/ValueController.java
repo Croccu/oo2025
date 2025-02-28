@@ -51,7 +51,7 @@ public class ValueController {
             return slidingAverage;
         }
 
-        for (int i = 0; i < valueEntities.size(); i++) {
+        for (int i = 0; i < valueEntities.size() -2; i++) {
             double value = (valueEntities.get(i).getValue() +
                     valueEntities.get(i + 1).getValue() +
                     valueEntities.get(i + 1).getValue() / 3.0);
