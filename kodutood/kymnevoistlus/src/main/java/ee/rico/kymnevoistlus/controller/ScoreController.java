@@ -47,6 +47,7 @@ public class ScoreController {
             throw new RuntimeException("ERROR_RESULT_CANNOT_BE_EMPTY");
         }
 
+        //punktide arvutamine tulemuste põhjal
         Athlete athlete = athleteRepository.findById(score.getAthleteId())
                 .orElseThrow(() -> new RuntimeException("ERROR_ATHLETE_NOT_FOUND"));
         score.setAthlete(athlete);
@@ -56,8 +57,6 @@ public class ScoreController {
 
         scoreRepository.save(score);
         return scoreRepository.findAll();
-
-        // TODO: Kogu punktisumma arvutamine iga võistleja kohta
     }
 
     @GetMapping("scores/{athleteId}")

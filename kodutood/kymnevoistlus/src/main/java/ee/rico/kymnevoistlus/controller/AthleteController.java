@@ -22,6 +22,7 @@ public class AthleteController {
     public List<Athlete> getAthletes() {
         List<Athlete> athletes = athleteRepository.findAll();
 
+        //total points iga sportlase kohta
         for (Athlete athlete : athletes) {
             List<Score> scores = scoreRepository.findByAthleteId(athlete.getId());
             int totalPoints = scores.stream().mapToInt(Score::getPoints).sum();
@@ -34,6 +35,7 @@ public class AthleteController {
     public Athlete getAthlete(@PathVariable Long id) {
         Athlete athlete = athleteRepository.findById(id).orElseThrow(() -> new RuntimeException("ERROR_ATHLETE_NOT_FOUND"));
 
+        //total points ühele sportlasele
         List<Score> scores = scoreRepository.findByAthleteId(id);
         int totalPoints = scores.stream().mapToInt(Score::getPoints).sum();
         athlete.setTotalPoints(totalPoints);
