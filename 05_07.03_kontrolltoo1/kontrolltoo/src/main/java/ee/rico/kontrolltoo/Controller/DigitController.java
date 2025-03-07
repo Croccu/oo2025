@@ -1,6 +1,8 @@
 package ee.rico.kontrolltoo.Controller;
 
 import ee.rico.kontrolltoo.Entity.Digit;
+import ee.rico.kontrolltoo.Entity.DigitConversion;
+import ee.rico.kontrolltoo.Repository.DigitConversionRepository;
 import ee.rico.kontrolltoo.Repository.DigitRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,9 @@ public class DigitController {
 
     @Autowired
     private DigitRepository digitRepository;
+
+    @Autowired
+    private DigitConversionRepository digitConversionRepository;
 
     @GetMapping("digits")
     public List<Digit> getAllDigits() {
@@ -50,15 +55,33 @@ public class DigitController {
         }
 
         int digitInt = digit.get().getDigit();
+        String convertedValue = "";
 
         if (type.equalsIgnoreCase("binary")) {
-            return "Binary: " + Integer.toBinaryString(digitInt);
+            convertedValue = "Binary: " + Integer.toBinaryString(digitInt);
         } else if (type.equalsIgnoreCase("octal")) {
-            return "Octal: " + Integer.toOctalString(digitInt);
+            convertedValue = "Octal: " + Integer.toOctalString(digitInt);
         } else if (type.equalsIgnoreCase("hex")) {
-            return "Hex: " + Integer.toHexString(digitInt);
+            convertedValue = "Hex: " + Integer.toHexString(digitInt);
         } else {
             throw new RuntimeException("PLEASE_PICK_CORRECT_DIGIT_TYPE");
         }
+
+        saveConversion(digit.get(), convertedValue, type);
+        return convertedValue;
+    }
+
+    private void saveConversion(Digit digit, String convertedValue, String conversionType) {
+        DigitConversion digitConversion = new DigitConversion();
+        digitConversion.setId(digit.getId());
+        digitConversion.setOriginalDigit(digit.getDigit());
+        digitConversion.setConvertedValue(convertedValue);
+        digitConversion.setConversionType(conversionType);
+        digitConversionRepository.save(digitConversion);
+    }
+
+    @GetMapping("digits/conversions")
+    public List<DigitConversion> getAllConversions() {
+        return digitConversionRepository.findAll();
     }
 }

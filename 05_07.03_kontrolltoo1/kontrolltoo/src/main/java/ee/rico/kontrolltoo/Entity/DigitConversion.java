@@ -12,9 +12,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Digit {
+public class DigitConversion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int digit;
+    private Long originalId;
+    private int originalDigit;
+    private String convertedValue;
+    private String conversionType;
 }
