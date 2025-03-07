@@ -9,4 +9,12 @@ import java.util.Date;
 @ControllerAdvice
 public class ExceptionCatcher {
 
+    @ExceptionHandler
+    public ResponseEntity<ErrorMessage> handleException(RuntimeException e) {
+        ErrorMessage error = new ErrorMessage();
+        error.setMessage(e.getMessage());
+        error.setTimestamp(new Date());
+        error.setStatus(400);
+        return ResponseEntity.badRequest().body(error);
+    }
 }
