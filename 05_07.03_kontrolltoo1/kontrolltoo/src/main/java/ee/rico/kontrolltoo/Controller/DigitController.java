@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,39 +42,44 @@ public class DigitController {
     }
 
     @PostMapping("digits/convert")
-    public String convertDigit(@RequestBody Map<String, Object> request) {
-        if (!request.containsKey("id") || !request.containsKey("type")) {
-            throw new RuntimeException("ERROR_ID_AND_OR_TYPE_MISSING");
+    public List<String> convertDigits(@RequestBody List<Map<String, Object>> requests) {
+        List<String> convertedValues = new ArrayList<>();
+
+        for (Map<String, Object> request : requests) {
+            if (!request.containsKey("id") || !request.containsKey("type")) {
+                throw new RuntimeException("ERROR_ID_AND_OR_TYPE_MISSING");
+            }
+
+            Long id = ((Number) request.get("id")).longValue();
+            String type = (String) request.get("type");
+
+            Optional<Digit> digit = digitRepository.findById(id);
+            if (digit.isEmpty()) {
+                throw new RuntimeException("ERROR_CANNOT_CONVERT_DIGIT");
+            }
+
+            int digitInt = digit.get().getDigit();
+            String convertedValue = "";
+
+            if (type.equalsIgnoreCase("binary")) {
+                convertedValue = "Binary: " + Integer.toBinaryString(digitInt);
+            } else if (type.equalsIgnoreCase("octal")) {
+                convertedValue = "Octal: " + Integer.toOctalString(digitInt);
+            } else if (type.equalsIgnoreCase("hex")) {
+                convertedValue = "Hex: " + Integer.toHexString(digitInt);
+            } else {
+                throw new RuntimeException("PLEASE_PICK_CORRECT_DIGIT_TYPE");
+            }
+
+            saveConversion(digit.get(), convertedValue, type);
+            convertedValues.add(convertedValue);
         }
 
-        Long id = ((Number) request.get("id")).longValue();
-        String type = (String) request.get("type");
-
-        Optional<Digit> digit = digitRepository.findById(id);
-        if (digit.isEmpty()) {
-            throw new RuntimeException("ERROR_CANNOT_CONVERT_DIGIT");
-        }
-
-        int digitInt = digit.get().getDigit();
-        String convertedValue = "";
-
-        if (type.equalsIgnoreCase("binary")) {
-            convertedValue = "Binary: " + Integer.toBinaryString(digitInt);
-        } else if (type.equalsIgnoreCase("octal")) {
-            convertedValue = "Octal: " + Integer.toOctalString(digitInt);
-        } else if (type.equalsIgnoreCase("hex")) {
-            convertedValue = "Hex: " + Integer.toHexString(digitInt);
-        } else {
-            throw new RuntimeException("PLEASE_PICK_CORRECT_DIGIT_TYPE");
-        }
-
-        saveConversion(digit.get(), convertedValue, type);
-        return convertedValue;
+        return convertedValues;
     }
 
     private void saveConversion(Digit digit, String convertedValue, String conversionType) {
         DigitConversion digitConversion = new DigitConversion();
-        digitConversion.setId(digit.getId());
         digitConversion.setOriginalDigit(digit.getDigit());
         digitConversion.setConvertedValue(convertedValue);
         digitConversion.setConversionType(conversionType);
@@ -82,6 +88,8 @@ public class DigitController {
 
     @GetMapping("digits/conversions")
     public List<DigitConversion> getAllConversions() {
-        return digitConversionRepository.findAll();
+        List<DigitConversion> conversions = digitConversionRepository.findAll();
+        System.out.println("Conversions: " + conversions);
+        return conversions;
     }
 }
