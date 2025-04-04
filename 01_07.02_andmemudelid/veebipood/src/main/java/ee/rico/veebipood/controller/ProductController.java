@@ -5,6 +5,7 @@ import ee.rico.veebipood.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:5173")
@@ -93,6 +94,32 @@ public class ProductController {
 //        }
         productRepository.save(product);
         return productRepository.findAll();
+    }
+
+//    @GetMapping("/category-products")
+//    public List<Product> getCategoryProducts(@RequestParam Long categoryId) {
+//        List<Product> products = productRepository.findAll();
+//        List<Product> filteredProducts = new ArrayList<>();
+////          for (int i = 0; i < products.size(); i++) {
+////              if (products.get(i). getCategory().getId().equals(categoryId)) {
+////                  filteredProducts.add(products.get(i))
+////              }
+////         }
+//
+//        for (Product p : products) {
+//            if (p.getCategory().getId().equals(categoryId)) {
+//                filteredProducts.add(p);
+//            }
+//        }
+//        return filteredProducts;
+//    }
+
+    @GetMapping("/category-products")
+    public List<Product> getCategoryProducts(@RequestParam Long categoryId) {
+        if (categoryId == -1 ) {
+            return productRepository.findAll();
+        }
+        return productRepository.findByCategory_Id(categoryId);
     }
 }
 
