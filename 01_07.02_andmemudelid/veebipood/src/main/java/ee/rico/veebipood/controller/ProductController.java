@@ -3,6 +3,8 @@ package ee.rico.veebipood.controller;
 import ee.rico.veebipood.model.Product;
 import ee.rico.veebipood.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -115,11 +117,11 @@ public class ProductController {
 //    }
 
     @GetMapping("/category-products")
-    public List<Product> getCategoryProducts(@RequestParam Long categoryId) {
+    public Page<Product> getCategoryProducts(@RequestParam Long categoryId, Pageable pageable) {
         if (categoryId == -1 ) {
-            return productRepository.findAll();
+            return productRepository.findAll(pageable);
         }
-        return productRepository.findByCategory_Id(categoryId);
+        return productRepository.findByCategory_Id(categoryId, pageable);
     }
 }
 
