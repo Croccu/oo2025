@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-
+@CrossOrigin(origins = "http://localhost:5173")
 public class ScoreController {
 
     @Autowired
@@ -29,12 +29,12 @@ public class ScoreController {
     @Autowired
     private AthleteRepository athleteRepository;
 
-    @GetMapping("scores")
+    @GetMapping("results")
     public List<Score> getScores() {
         return scoreRepository.findAll();
     }
 
-    @PostMapping("scores")
+    @PostMapping("results")
     public List<Score> addScore(@RequestBody Score score) {
         if (score.getId() != null) {
             throw new RuntimeException("ERROR_CANNOT_ADD_WITH_ID");
@@ -47,8 +47,12 @@ public class ScoreController {
             throw new RuntimeException("ERROR_RESULT_CANNOT_BE_EMPTY");
         }
 
+        if (score.getAthlete() == null || score.getAthlete().getId() == null) {
+            throw new RuntimeException("ERROR_ATHLETE_ID_IS_NULL");
+        }
+
         //punktide arvutamine tulemuste põhjal
-        Athlete athlete = athleteRepository.findById(score.getAthleteId())
+        Athlete athlete = athleteRepository.findById(score.getAthlete().getId())
                 .orElseThrow(() -> new RuntimeException("ERROR_ATHLETE_NOT_FOUND"));
         score.setAthlete(athlete);
 
@@ -59,7 +63,7 @@ public class ScoreController {
         return scoreRepository.findAll();
     }
 
-    @GetMapping("scores/{athleteId}")
+    @GetMapping("results/{athleteId}")
     public List<Score> getScore(@PathVariable Long athleteId) {
         List<Score> scores = scoreRepository.findByAthleteId(athleteId);
         if (scores.isEmpty()) {
@@ -68,9 +72,14 @@ public class ScoreController {
         return scores;
     }
 
-    @DeleteMapping("scores/{id}")
+    @DeleteMapping("results/{id}")
     public List<Score> deleteScore(@PathVariable Long id) {
         scoreRepository.deleteById(id);
         return scoreRepository.findAll();
+    }
+
+    @GetMapping("results-by-country")
+    public List<Score> getResultsByCountry(@RequestParam String country) {
+        return scoreRepository.findByAthlete_Country(country);
     }
 }

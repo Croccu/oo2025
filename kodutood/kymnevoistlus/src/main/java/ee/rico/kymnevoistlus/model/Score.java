@@ -1,5 +1,6 @@
 package ee.rico.kymnevoistlus.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +20,9 @@ public class Score {
 
     @Column(name = "athlete_id", insertable = false, updatable = false)
     private Long athleteId;
-
+    @JsonProperty("event")
     private String eventName;
+    @JsonProperty("score")
     private Double result;
     private int points;
 
