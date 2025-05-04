@@ -1,4 +1,3 @@
-// Athletes.tsx
 import { useEffect, useRef, useState } from "react";
 import { Athlete } from "../models/Athlete";
 import { ToastContainer, toast } from 'react-toastify';

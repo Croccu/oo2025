@@ -18,8 +18,6 @@ public class Score {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "athlete_id", insertable = false, updatable = false)
-    private Long athleteId;
     @JsonProperty("event")
     private String eventName;
     @JsonProperty("score")
