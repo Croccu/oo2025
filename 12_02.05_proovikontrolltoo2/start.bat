@@ -1,0 +1,6 @@
+@echo off
+echo Starting Spring Boot backend...
+start cmd /k "cd dictionary && mvnw spring-boot:run"
+
+echo Starting React frontend...
+start cmd /k "cd frontend && npm run dev"
