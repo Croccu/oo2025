@@ -76,6 +76,8 @@ function MainPage() {
           <option>1</option>
           <option>2</option>
           <option>3</option>
+          <option>5</option>
+          <option>10</option>
         </select>
 
         <label htmlFor="countrySelect" className="form-label ms-3">Choose country:</label>
