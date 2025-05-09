@@ -21,14 +21,14 @@ function Athletes() {
   const nameRef = useRef<HTMLInputElement>(null);
   const countryRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
-  const totalPointsRef = useRef<HTMLInputElement>(null);
+  // const totalPointsRef = useRef<HTMLInputElement>(null);
 
   const addAthlete = () => {
     const newAthlete = {
       name: nameRef.current?.value,
       country: countryRef.current?.value,
       age: Number(ageRef.current?.value),
-      totalPoints: Number(totalPointsRef.current?.value)
+      // totalPoints: Number(totalPointsRef.current?.value)
     };
     fetch(`http://localhost:8080/athletes`, {
       method: "POST",
@@ -38,8 +38,15 @@ function Athletes() {
       .then(res => res.json())
       .then(json => {
         if (json.message === undefined && json.timestamp === undefined && json.status === undefined) {
-          setAthletes(json);
-          toast.success("Athlete added successfully!");
+          fetch("http://localhost:8080/athletes")
+            .then(res => res.json())
+            .then(fetched => {
+              setAthletes(fetched);
+              toast.success("Athlete added successfully!");
+              nameRef.current!.value = "";
+              countryRef.current!.value = "";
+              ageRef.current!.value = "";
+            });
         } else {
           toast.error(json.message);
         }
@@ -60,8 +67,8 @@ function Athletes() {
         <label className="form-label mt-2">Age</label>
         <input ref={ageRef} type="number" className="form-control" />
 
-        <label className="form-label mt-2">Total points</label>
-        <input ref={totalPointsRef} type="number" className="form-control" />
+        {/* <label className="form-label mt-2">Total points</label>
+        <input ref={totalPointsRef} type="number" className="form-control" /> */}
 
         <button className="btn btn-light mt-3" onClick={addAthlete}>Add athlete</button>
       </div>

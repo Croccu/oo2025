@@ -31,6 +31,7 @@ public class AthleteController {
             List<Score> scores = scoreRepository.findByAthleteId(athlete.getId());
             int totalPoints = scores.stream().mapToInt(Score::getPoints).sum();
             athlete.setTotalPoints(totalPoints);
+            // System.out.println("Athlete: " + athlete.getName() + ", Scores: " + scores.size() + ", Points: " + totalPoints);
         }
         return athletes;
     }
@@ -74,12 +75,22 @@ public class AthleteController {
 
         String[] sortParams = sort.split(",");
         Pageable pageable = PageRequest.of(page, size,
-                sortParams[1].equalsIgnoreCase("desc") ? org.springframework.data.domain.Sort.by(sortParams[0]).descending() : org.springframework.data.domain.Sort.by(sortParams[0]).ascending()
+                sortParams[1].equalsIgnoreCase("desc") ?
+                        org.springframework.data.domain.Sort.by(sortParams[0]).descending() :
+                        org.springframework.data.domain.Sort.by(sortParams[0]).ascending()
         );
 
         if (country == null || country.isEmpty()) {
+            for (Athlete athlete : athleteRepository.findAll(pageable).getContent()) {
+                List<Score> scores = scoreRepository.findByAthleteId(athlete.getId());
+                athlete.setTotalPoints(scores.stream().mapToInt(Score::getPoints).sum());
+            }
             return athleteRepository.findAll(pageable);
         } else {
+            for (Athlete athlete : athleteRepository.findByCountry(country, pageable).getContent()) {
+                List<Score> scores = scoreRepository.findByAthleteId(athlete.getId());
+                athlete.setTotalPoints(scores.stream().mapToInt(Score::getPoints).sum());
+            }
             return athleteRepository.findByCountry(country, pageable);
         }
     }

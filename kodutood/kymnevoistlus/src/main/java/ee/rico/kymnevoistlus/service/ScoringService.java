@@ -9,7 +9,7 @@ public class ScoringService {
         double A, B, C; // alaspetsiifilised konstandid
 
         switch (eventName.toLowerCase()) {
-            case "100m run":
+            case "100m":
                 A = 25.4347;
                 B = 18;
                 C = 1.81;
@@ -29,7 +29,7 @@ public class ScoringService {
                 B = 75;
                 C = 1.42;
                 return (int) (A * Math.pow(score * 100 - B, C));
-            case "400m run":
+            case "400m":
                 A = 1.53775;
                 B = 82;
                 C = 1.81;
@@ -54,7 +54,7 @@ public class ScoringService {
                 B = 7;
                 C = 1.08;
                 return (int) (A * Math.pow(score - B, C));
-            case "1500m run":
+            case "1500m":
                 A = 0.03768;
                 B = 480;
                 C = 1.85;

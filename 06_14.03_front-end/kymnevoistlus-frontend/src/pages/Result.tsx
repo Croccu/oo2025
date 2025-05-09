@@ -10,10 +10,16 @@ function Results() {
   const [results, setResults] = useState<Result[]>([]);
   const [athletes, setAthletes] = useState<Athlete[]>([]);
   const [selectedAthleteId, setSelectedAthleteId] = useState<number | null>(null);
+  const selectedAthlete = athletes.find(a => a.id === selectedAthleteId);
 
-  const eventRef = useRef<HTMLInputElement>(null);
+  const decathlonEvents = [
+    "100m", "long jump", "shot put", "high jump", "400m",
+    "110m hurdles", "discus throw", "pole vault", "javelin throw", "1500m"
+  ];
+
+  const eventRef = useRef<HTMLSelectElement>(null);
   const scoreRef = useRef<HTMLInputElement>(null);
-  const pointsRef = useRef<HTMLInputElement>(null);
+  // const pointsRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetch("http://localhost:8080/athletes")
@@ -48,7 +54,7 @@ function Results() {
     const newResult = {
       event: eventRef.current?.value,
       score: scoreRef.current?.value,
-      points: Number(pointsRef.current?.value),
+      // points: Number(pointsRef.current?.value), // Not needed, points are calculated on the server side
       athlete: { id: selectedAthleteId }
     };
 
@@ -90,15 +96,26 @@ function Results() {
 
       {selectedAthleteId !== null && (
         <>
+          {selectedAthlete && (
+            <div className="mb-3">
+              <strong>Total points:</strong> {selectedAthlete.totalPoints}
+            </div>
+          )}
           <div className="mb-4">
-            <label className="form-label">Event</label>
-            <input ref={eventRef} type="text" className="form-control" />
+          <label className="form-label">Event</label>
+          <select ref={eventRef} className="form-select">
+            {decathlonEvents.map(event => (
+              <option key={event} value={event}>{event}</option>
+            ))}
+          </select>
 
             <label className="form-label mt-2">Score</label>
             <input ref={scoreRef} type="text" className="form-control" />
 
-            <label className="form-label mt-2">Points</label>
-            <input ref={pointsRef} type="number" className="form-control" />
+
+            {/* Not needed, points are calculated on the server side */}
+            {/* <label className="form-label mt-2">Points</label>
+            <input ref={pointsRef} type="number" className="form-control" /> */}
 
             <button className="btn btn-light mt-3" onClick={addResult}>Add result</button>
           </div>
