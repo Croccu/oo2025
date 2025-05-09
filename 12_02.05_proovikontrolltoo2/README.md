@@ -34,15 +34,17 @@ It allows users to:
 
 ---
 
-## 🛠 Launching the App
+## 🛠️ Launching the App
 
-From the root folder (12_02.05_proovikontrolltoo2):
+From the root folder (`12_02.05_proovikontrolltoo2`), run:
 
 ### macOS / Linux
 ```bash
 ./start.sh
+```
 
-### macOS / Linux
+### Windows
+```cmd
 start.bat
-or
-Double-click start.bat
+```
+Or simply **double-click `start.bat`** in File Explorer.
