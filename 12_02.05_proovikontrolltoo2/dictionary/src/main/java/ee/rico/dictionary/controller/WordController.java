@@ -3,9 +3,8 @@ package ee.rico.dictionary.controller;
 import ee.rico.dictionary.model.Word;
 import ee.rico.dictionary.repository.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173")
@@ -15,13 +14,21 @@ public class WordController {
     private WordRepository wordRepository;
 
     @GetMapping("words")
-    public List<Word> findAll() {
-        return wordRepository.findAll();
+    public Page<Word> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "asc") String sort) {
+        Pageable pageable = PageRequest.of(page, size);
+        if ("desc".equals(sort)) {
+            return wordRepository.findAllByOrderByNameDesc(pageable);
+        } else {
+            return wordRepository.findAllByOrderByNameAsc(pageable);
+        }
     }
 
     @GetMapping("words/{id}")
     public Word findById(@PathVariable Long id) {
-        return wordRepository.findById(id).orElseThrow(() -> new RuntimeException("ERROR_ATHLETE_NOT_FOUND"));
+        return wordRepository.findById(id).orElseThrow(() -> new RuntimeException("ERROR_WORD_NOT_FOUND"));
     }
 
     @PostMapping("words")
