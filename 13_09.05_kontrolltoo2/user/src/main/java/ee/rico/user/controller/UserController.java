@@ -48,7 +48,7 @@ public class UserController {
         userRepository.deleteById(id);
     }
 
-    @PostMapping("/users/login")
+    @GetMapping("/users/login")
     public String login(@RequestParam String email, @RequestParam String password) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
