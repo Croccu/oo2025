@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Bootstrap from 'react-bootstrap';
 import { User } from '../models/User';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/MainPage.css';
 
 const MainPage = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -29,10 +29,9 @@ const MainPage = () => {
   }, [page, sortOrder]);
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h2>Users</h2>
-
-      <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
+    <div className="main-wrapper">
+      <h2 className="mb-3">Users</h2>
+      <div className="mb-3" style={{ alignSelf: 'flex-end' }}>
         <Bootstrap.Button onClick={() => navigate('/new')}>Add User</Bootstrap.Button>
       </div>
 
@@ -72,12 +71,15 @@ const MainPage = () => {
         </tbody>
       </Bootstrap.Table>
 
-      <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'space-between' }}>
+      <div className="d-flex justify-content-between mt-3" style={{ width: '100%' }}>
         <Bootstrap.Button disabled={page === 0} onClick={() => setPage(page - 1)}>
           Previous
         </Bootstrap.Button>
         <span>Page {page + 1} of {totalPages}</span>
-        <Bootstrap.Button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
+        <Bootstrap.Button
+          disabled={page + 1 >= totalPages}
+          onClick={() => setPage(page + 1)}
+        >
           Next
         </Bootstrap.Button>
       </div>

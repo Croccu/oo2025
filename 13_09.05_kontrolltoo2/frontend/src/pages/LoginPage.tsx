@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Bootstrap from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/LoginPage.css';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -30,10 +31,10 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '80px auto', padding: '1rem' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '2rem' }}>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div style={{ marginBottom: '1rem' }}>
+    <div className="login-wrapper">
+      <form onSubmit={handleSubmit} className="login-form">
+        <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Login</h2>
+        <div className="mb-3">
           <label>Email</label>
           <input
             className="form-control"
@@ -43,7 +44,7 @@ const LoginPage = () => {
             required
           />
         </div>
-        <div style={{ marginBottom: '1rem' }}>
+        <div className="mb-3">
           <label>Password</label>
           <input
             className="form-control"
@@ -53,15 +54,15 @@ const LoginPage = () => {
             required
           />
         </div>
-        <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+        <div className="text-center mt-3">
           <Bootstrap.Button type="submit">Log In</Bootstrap.Button>
         </div>
+        {message && (
+          <div className="text-center mt-3">
+            <span>{message}</span>
+          </div>
+        )}
       </form>
-      {message && (
-        <div style={{ textAlign: 'center', marginTop: '1rem' }}>
-          <span>{message}</span>
-        </div>
-      )}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { User } from '../models/User';
 import * as Bootstrap from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../styles/UserForm.css';
 
 const UserForm = () => {
   const navigate = useNavigate();
@@ -43,30 +44,25 @@ const UserForm = () => {
   };
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '1000px', margin: '0 auto' }}>
+    <div className="user-form-container">
       <h2>Add User</h2>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-        <div style={{ flex: 1 }}>
+      <form onSubmit={handleSubmit} className="user-form">
+        <div className="column">
           <label>Name</label>
           <input className="form-control" name="name" value={user.name} onChange={handleChange} />
-
           <label>Username</label>
           <input className="form-control" name="username" value={user.username} onChange={handleChange} />
-
           <label>Email</label>
           <input className="form-control" name="email" value={user.email} onChange={handleChange} />
-
           <label>Password</label>
           <input className="form-control" name="password" value={user.password} onChange={handleChange} />
-
           <label>Phone</label>
           <input className="form-control" name="phone" value={user.phone} onChange={handleChange} />
-
           <label>Website</label>
           <input className="form-control" name="website" value={user.website} onChange={handleChange} />
         </div>
 
-        <div style={{ flex: 1 }}>
+        <div className="column">
           <h5>Address</h5>
           <label>Street</label>
           <input className="form-control" name="address.street" value={user.address.street} onChange={handleChange} />
@@ -86,7 +82,7 @@ const UserForm = () => {
           <input className="form-control" name="company.bs" value={user.company.bs} onChange={handleChange} />
         </div>
 
-        <div style={{ width: '100%', textAlign: 'center', marginTop: '2rem' }}>
+        <div className="form-submit">
           <Bootstrap.Button type="submit">Create User</Bootstrap.Button>
         </div>
       </form>
