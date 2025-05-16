@@ -11,7 +11,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Override Bootstrap form controls */
+
+/* Override Bootstrap */
+
 .form-control {
   background-color: #1e1e1e !important;
   border-color: #333 !important;
@@ -25,7 +27,6 @@ body {
   box-shadow: 0 0 0 0.2rem rgba(41, 121, 255, 0.25) !important;
 }
 
-/* Override Bootstrap buttons */
 .btn {
   background-color: #2979ff !important;
   color: #fff !important;
@@ -43,7 +44,6 @@ body {
   color: #fff !important;
 }
 
-/* Override Bootstrap links */
 a {
   color: #2979ff !important;
   text-decoration: none !important;
@@ -53,7 +53,6 @@ a:hover {
   color: #5393ff !important;
 }
 
-/* Reset some default input styles to play nice */
 input,
 textarea,
 select {
